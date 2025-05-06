@@ -1,0 +1,29 @@
+import java.util.Scanner;
+
+public class StickGame {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        long n = scanner.nextLong();
+        long tanyaSticks = 0;
+        boolean tanyaTurn = true;
+
+        while (n > 0) {
+            if (n % 2 == 0) {
+                long half = n / 2;
+                if (half % 2 == 1 || half == 2) {
+                    n -= half;
+                    if (tanyaTurn) tanyaSticks += half;
+                } else {
+                    n -= 1;
+                    if (tanyaTurn) tanyaSticks += 1;
+                }
+            } else {
+                n -= 1;
+                if (tanyaTurn) tanyaSticks += 1;
+            }
+            tanyaTurn = !tanyaTurn;
+        }
+
+        System.out.println(tanyaSticks);
+    }
+}
