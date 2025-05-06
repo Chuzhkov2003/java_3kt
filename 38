@@ -1,0 +1,37 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Scanner;
+
+public class JosephusProblem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("Введите количество игроков: ");
+        int playersCount = scanner.nextInt();
+        
+        System.out.print("Введите номер первого игрока: ");
+        int startPlayer = scanner.nextInt();
+        
+        List<Integer> result = playJosephus(playersCount, startPlayer);
+        System.out.println("Результат: " + result);
+    }
+
+    private static List<Integer> playJosephus(int n, int k) {
+        LinkedList<Integer> players = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            players.add(i);
+        }
+
+        List<Integer> result = new ArrayList<>();
+        int index = k - 1; // Начинаем с указанного игрока (индексация с 0)
+
+        while (!players.isEmpty()) {
+            index %= players.size(); // Зацикливаем список
+            result.add(players.remove(index));
+            index += k - 1; // Переходим к следующему "каждому третьему"
+        }
+
+        return result;
+    }
+}
