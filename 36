@@ -1,0 +1,56 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class CaesarCrackerManual {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Введите зашифрованный текст:");
+        String encryptedText = scanner.nextLine();
+        
+        System.out.println("Введите текст для словаря (чем больше, тем лучше):");
+        String dictionaryText = scanner.nextLine();
+        
+        int bestShift = findBestShift(encryptedText, dictionaryText);
+        String decrypted = decrypt(encryptedText, bestShift);
+        
+        System.out.println("Найденный сдвиг: " + bestShift);
+        System.out.println("Расшифрованный текст: " + decrypted);
+    }
+
+    private static int findBestShift(String encrypted, String dictionary) {
+        Map<Integer, Double> shiftScores = new HashMap<>();
+        for (int shift = 0; shift < 26; shift++) {
+            String decrypted = decrypt(encrypted, shift);
+            shiftScores.put(shift, calculateScore(decrypted, dictionary));
+        }
+        return shiftScores.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .get().getKey();
+    }
+
+    private static double calculateScore(String text, String dictionary) {
+        text = text.toLowerCase();
+        dictionary = dictionary.toLowerCase();
+        double score = 0;
+        for (int i = 0; i < text.length(); i++) {
+            if (dictionary.indexOf(text.charAt(i)) >= 0) {
+                score++;
+            }
+        }
+        return score / text.length();
+    }
+
+    private static String decrypt(String text, int shift) {
+        StringBuilder result = new StringBuilder();
+        for (char c : text.toCharArray()) {
+            if (Character.isLetter(c)) {
+                char base = Character.isLowerCase(c) ? 'a' : 'A';
+                c = (char)(((c - base - shift + 26) % 26) + base);
+            }
+            result.append(c);
+        }
+        return result.toString();
+    }
+}
