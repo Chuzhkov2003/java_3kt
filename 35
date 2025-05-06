@@ -1,0 +1,28 @@
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.Comparator;
+
+public class CustomWeightSort {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите веса через пробел:");
+        String input = scanner.nextLine();
+        
+        String[] sortedWeights = sortByDigitSum(input);
+        System.out.println("Отсортированный список:");
+        System.out.println(String.join(" ", sortedWeights));
+    }
+
+    private static String[] sortByDigitSum(String weights) {
+        String[] numbers = weights.split(" ");
+        Arrays.sort(numbers, Comparator.comparingInt(CustomWeightSort::digitSum)
+                                      .thenComparing(Comparator.naturalOrder()));
+        return numbers;
+    }
+
+    private static int digitSum(String number) {
+        return number.chars()
+                     .map(Character::getNumericValue)
+                     .sum();
+    }
+}
