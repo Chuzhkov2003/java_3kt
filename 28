@@ -1,0 +1,28 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String text = scanner.nextLine();
+        int shift = scanner.nextInt();
+        String direction = scanner.next();
+        
+        String result = "";
+        if (direction.equals("right")) {
+            shift = shift % 26;
+        } else if (direction.equals("left")) {
+            shift = -(shift % 26);
+        }
+        
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (Character.isLetter(c)) {
+                char base = Character.isLowerCase(c) ? 'a' : 'A';
+                c = (char)(((c - base + shift + 26) % 26) + base);
+            }
+            result += c;
+        }
+        
+        System.out.println(result);
+    }
+}
