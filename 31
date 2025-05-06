@@ -1,0 +1,47 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        List<Integer> distances = List.of(50, 55, 57, 58, 60);
+        int maxDistance = 175;
+        int citiesToVisit = 3;
+        
+        List<List<Integer>> combinations = generateCombinations(distances, citiesToVisit);
+        int bestSum = findBestSum(combinations, maxDistance);
+        
+        System.out.println(bestSum);
+    }
+    
+    private static List<List<Integer>> generateCombinations(List<Integer> list, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        generateCombinationsHelper(list, k, 0, new ArrayList<>(), result);
+        return result;
+    }
+    
+    private static void generateCombinationsHelper(List<Integer> list, int k, int start, List<Integer> current, List<List<Integer>> result) {
+        if (current.size() == k) {
+            result.add(new ArrayList<>(current));
+            return;
+        }
+        
+        for (int i = start; i < list.size(); i++) {
+            current.add(list.get(i));
+            generateCombinationsHelper(list, k, i + 1, current, result);
+            current.remove(current.size() - 1);
+        }
+    }
+    
+    private static int findBestSum(List<List<Integer>> combinations, int maxDistance) {
+        int bestSum = -1;
+        
+        for (List<Integer> combo : combinations) {
+            int sum = combo.stream().mapToInt(Integer::intValue).sum();
+            if (sum <= maxDistance && sum > bestSum) {
+                bestSum = sum;
+            }
+        }
+        
+        return bestSum;
+    }
+}
