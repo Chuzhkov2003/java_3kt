@@ -1,0 +1,45 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int number = scanner.nextInt();
+        int start = scanner.nextInt();
+        
+        String numStr = Integer.toString(number);
+        int sum = 0;
+        int power = start;
+        
+        for (int i = 0; i < numStr.length(); i++) {
+            int digit = Character.getNumericValue(numStr.charAt(i));
+            sum += Math.pow(digit, power);
+            power++;
+        }
+        
+        boolean found = false;
+        for (int s = 1; s <= 64; s++) {
+            if (sum == number * s) {
+                System.out.println("sC(" + number + ", " + start + ") => " + 
+                    buildEquation(numStr, start) + " = " + sum + " = " + 
+                    number + " * " + s);
+                found = true;
+                break;
+            }
+        }
+        
+        if (!found) {
+            System.out.println("Невозможно");
+        }
+    }
+    
+    private static String buildEquation(String numStr, int start) {
+        StringBuilder equation = new StringBuilder();
+        int power = start;
+        for (int i = 0; i < numStr.length(); i++) {
+            if (i > 0) equation.append("+");
+            equation.append(numStr.charAt(i)).append("^").append(power);
+            power++;
+        }
+        return equation.toString();
+    }
+}
